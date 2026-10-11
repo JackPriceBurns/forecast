@@ -1,5 +1,17 @@
 /******************************************************************************
  *
+ *  NOTICE OF CHANGES
+ *  2026/10/09:
+ *      - Remove #include of log.h (external Android dependency)
+ * 
+ *  Compile with REVOLUTION defined to include these changes.
+ * 
+ ******************************************************************************/
+
+
+
+/******************************************************************************
+ *
  *  Copyright (C) 1999-2012 Broadcom Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,11 +45,13 @@
 #include "btm_int.h"
 #include "btu.h"
 
+#ifndef REVOLUTION
 #include <cutils/log.h>
 #define info(fmt, ...)  ALOGI ("%s: " fmt,__FUNCTION__,  ## __VA_ARGS__)
 #define debug(fmt, ...) ALOGD ("%s: " fmt,__FUNCTION__,  ## __VA_ARGS__)
 #define error(fmt, ...) ALOGE ("## ERROR : %s: " fmt "##",__FUNCTION__,  ## __VA_ARGS__)
 #define asrt(s) if(!(s)) ALOGE ("## %s assert %s failed at line:%d ##",__FUNCTION__, #s, __LINE__)
+#endif
 
 
 static const tPORT_STATE default_port_pars =
@@ -92,7 +106,9 @@ tPORT *port_allocate_port (UINT8 dlci, BD_ADDR bd_addr)
             port_set_defaults (p_port);
 
             rfc_cb.rfc.last_port = yy;
+#ifndef REVOLUTION
             debug("rfc_cb.port.port[%d] allocated, last_port:%d", yy, rfc_cb.rfc.last_port);
+#endif
             return (p_port);
         }
     }

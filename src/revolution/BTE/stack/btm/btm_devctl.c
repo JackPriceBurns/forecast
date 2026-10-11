@@ -3,6 +3,8 @@
  *  NOTICE OF CHANGES
  *  2025/03/13:
  *      - Restore old function signatures
+ *  2026/10/09:
+ *      - Make BTM_RegisterForVSEvents compile with its RVL signature (body is not the RVL version)
  * 
  *  Compile with REVOLUTION defined to include these changes.
  * 
@@ -38,7 +40,6 @@
 #include <cstdlib>
 #include <cstring>
 #include <cstdio>
-#include <stddef.h>
 
 #include "bt_types.h"
 #include "hcimsgs.h"
@@ -1478,6 +1479,9 @@ tBTM_STATUS BTM_RegisterForVSEvents (tBTM_VS_EVT_CB *p_cb, BOOLEAN is_register)
 {
     tBTM_STATUS retval = BTM_SUCCESS;
     UINT8 i, free_idx = BTM_MAX_VSE_CALLBACKS;
+#ifdef REVOLUTION
+    BOOLEAN is_register = TRUE;
+#endif
 
     /* See if callback is already registered */
     for (i=0; i<BTM_MAX_VSE_CALLBACKS; i++)

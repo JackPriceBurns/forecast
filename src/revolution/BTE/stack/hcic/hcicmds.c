@@ -30,7 +30,6 @@
 #include "hcidefs.h"
 #include "btu.h"
 
-#include <stddef.h>
 #include <cstring>
 
 #if defined (LMP_TEST)

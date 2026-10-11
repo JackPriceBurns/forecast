@@ -1,5 +1,17 @@
 /******************************************************************************
  *
+ *  NOTICE OF CHANGES
+ *  2026/10/09:
+ *      - Remove role switch check from btm_remove_acl (not in RVL version)
+ * 
+ *  Compile with REVOLUTION defined to include these changes.
+ * 
+ ******************************************************************************/
+
+
+
+/******************************************************************************
+ *
  *  Copyright (C) 2000-2012 Broadcom Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,7 +38,6 @@
 #include <cstdlib>
 #include <cstring>
 #include <cstdio>
-#include <stddef.h>
 
 #include "bt_types.h"
 #include "bt_target.h"
@@ -2820,6 +2831,7 @@ tBTM_STATUS btm_remove_acl (BD_ADDR bd_addr)
     tBTM_STATUS status = BTM_SUCCESS;
 
     BTM_TRACE_DEBUG0 ("btm_remove_acl");
+#ifndef REVOLUTION
 #if BTM_DISC_DURING_RS == TRUE
     tBTM_SEC_DEV_REC  *p_dev_rec = btm_find_dev (bd_addr);
 
@@ -2829,6 +2841,7 @@ tBTM_STATUS btm_remove_acl (BD_ADDR bd_addr)
         p_dev_rec->rs_disc_pending = BTM_SEC_DISC_PENDING;
     }
     else    /* otherwise can disconnect right away */
+#endif
 #endif
 
     if (hci_handle != 0xFFFF)

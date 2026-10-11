@@ -1,5 +1,17 @@
 /******************************************************************************
  *
+ *  NOTICE OF CHANGES
+ *  2026/10/09:
+ *      - Remove #include of gap_int.h and hidd_int.h (headers not available)
+ * 
+ *  Compile with REVOLUTION defined to include these changes.
+ * 
+ ******************************************************************************/
+
+
+
+/******************************************************************************
+ *
  *  Copyright (C) 1999-2012 Broadcom Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -54,8 +66,10 @@
 #include "btu_eval.h"
 #endif
 
+#ifndef REVOLUTION
 #if GAP_INCLUDED == TRUE
 #include "gap_int.h"
+#endif
 #endif
 
 #if (defined(OBX_INCLUDED) && OBX_INCLUDED == TRUE)
@@ -94,8 +108,10 @@
 #include "sap_int.h"
 #endif
 
+#ifndef REVOLUTION
 #if (defined(HID_DEV_INCLUDED) && HID_DEV_INCLUDED == TRUE )
 #include "hidd_int.h"
+#endif
 #endif
 
 #if (defined(HID_HOST_INCLUDED) && HID_HOST_INCLUDED == TRUE )

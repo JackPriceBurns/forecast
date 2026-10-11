@@ -3,6 +3,8 @@
  *  NOTICE OF CHANGES
  *  2025/03/11:
  *      - Restore old function signatures
+ *  2026/10/09:
+ *      - Only copy the descriptor in BTA_HhAddDev for RVL target
  * 
  *  Compile with REVOLUTION defined to include these changes.
  * 
@@ -363,7 +365,11 @@ void BTA_HhAddDev(BD_ADDR bda, tBTA_HH_ATTR_MASK attr_mask, UINT8 sub_class,
 #endif
 {
     tBTA_HH_MAINT_DEV    *p_buf;
+#ifdef REVOLUTION
+    UINT16  len = sizeof(tBTA_HH_MAINT_DEV);
+#else
     UINT16  len = sizeof(tBTA_HH_MAINT_DEV) + dscp_info.descriptor.dl_len;
+#endif
 
     p_buf = (tBTA_HH_MAINT_DEV *)GKI_getbuf(len);
 
@@ -380,6 +386,9 @@ void BTA_HhAddDev(BD_ADDR bda, tBTA_HH_ATTR_MASK attr_mask, UINT8 sub_class,
         p_buf->app_id               = app_id;
         bdcpy(p_buf->bda, bda);
 
+#ifdef REVOLUTION
+        memcpy(&p_buf->dscp_info.descriptor, &dscp_info, sizeof(tBTA_HH_DEV_DESCR));
+#else
         memcpy(&p_buf->dscp_info, &dscp_info, sizeof(tBTA_HH_DEV_DSCP_INFO));
         if ( dscp_info.descriptor.dl_len != 0 && dscp_info.descriptor.dsc_list)
         {
@@ -392,6 +401,7 @@ void BTA_HhAddDev(BD_ADDR bda, tBTA_HH_ATTR_MASK attr_mask, UINT8 sub_class,
             p_buf->dscp_info.descriptor.dsc_list = NULL;
             p_buf->dscp_info.descriptor.dl_len = 0;
         }
+#endif
 
         bta_sys_sendmsg(p_buf);
     }

@@ -1,5 +1,17 @@
 /******************************************************************************
  *
+ *  NOTICE OF CHANGES
+ *  2026/10/09:
+ *      - Remove DI discovery and inquiry result fields missing from RVL target
+ * 
+ *  Compile with REVOLUTION defined to include these changes.
+ * 
+ ******************************************************************************/
+
+
+
+/******************************************************************************
+ *
  *  Copyright (C) 2003-2012 Broadcom Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -1267,6 +1279,7 @@ void bta_dm_discover (tBTA_DM_MSG *p_data)
 ** Returns          void
 **
 *******************************************************************************/
+#ifndef REVOLUTION
 void bta_dm_di_disc_cmpl(tBTA_DM_MSG *p_data)
 {
     tBTA_DM_DI_DISC_CMPL    di_disc;
@@ -1285,6 +1298,7 @@ void bta_dm_di_disc_cmpl(tBTA_DM_MSG *p_data)
     bta_dm_di_cb.p_di_db = NULL;
     bta_dm_search_cb.p_search_cback(BTA_DM_DI_DISC_CMPL_EVT, (tBTA_DM_SEARCH *) &di_disc);
 }
+#endif
 
 /*******************************************************************************
 **
@@ -1787,9 +1801,11 @@ void bta_dm_search_cmpl (tBTA_DM_MSG *p_data)
     utl_freebuf((void **)&bta_dm_search_cb.p_srvc_uuid);
 #endif
 
+#ifndef REVOLUTION
     if (p_data->hdr.layer_specific == BTA_DM_API_DI_DISCOVER_EVT)
         bta_dm_di_disc_cmpl(p_data);
     else
+#endif
         bta_dm_search_cb.p_search_cback(BTA_DM_DISC_CMPL_EVT, NULL);
 }
 
@@ -2401,12 +2417,16 @@ static void bta_dm_inq_results_cb (tBTM_INQ_RESULTS *p_inq, UINT8 *p_eir)
 
     tBTA_DM_SEARCH     result;
     tBTM_INQ_INFO      *p_inq_info;
+#ifndef REVOLUTION
     UINT16             service_class;
+#endif
 
     bdcpy(result.inq_res.bd_addr, p_inq->remote_bd_addr);
     memcpy(result.inq_res.dev_class, p_inq->dev_class, DEV_CLASS_LEN);
+#ifndef REVOLUTION
     BTM_COD_SERVICE_CLASS(service_class, p_inq->dev_class);
     result.inq_res.is_limited = (service_class & BTM_COD_SERVICE_LMTD_DISCOVER)?TRUE:FALSE;
+#endif
     result.inq_res.rssi = p_inq->rssi;
 
 #if (BLE_INCLUDED == TRUE)
@@ -2421,8 +2441,10 @@ static void bta_dm_inq_results_cb (tBTM_INQ_RESULTS *p_inq, UINT8 *p_eir)
 
     if((p_inq_info = BTM_InqDbRead(p_inq->remote_bd_addr)) != NULL)
     {
+#ifndef REVOLUTION
         /* initialize remt_name_not_required to FALSE so that we get the name by default */
         result.inq_res.remt_name_not_required = FALSE;
+#endif
 
     }
 
@@ -2433,8 +2455,10 @@ static void bta_dm_inq_results_cb (tBTM_INQ_RESULTS *p_inq, UINT8 *p_eir)
     {
         /* application indicates if it knows the remote name, inside the callback
          copy that to the inquiry data base*/
+#ifndef REVOLUTION
         if(result.inq_res.remt_name_not_required)
             p_inq_info->appl_knows_rem_name = TRUE;
+#endif
 
     }
 

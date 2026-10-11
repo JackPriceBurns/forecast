@@ -1,10 +1,13 @@
 #include <revolution/ESP.h>
+#include <revolution/ESP/esp.h>
 #include <revolution/NAND.h>
 #include <revolution/OS.h>
 
 #include <cstdio>
 #include <cstring>
-#include <wchar.h>
+/* This MSL has no <wchar.h>; only NANDInitBanner (not in the DOL) uses these */
+int wcscmp(const wchar_t* s1, const wchar_t* s2);
+wchar_t* wcsncpy(wchar_t* dst, const wchar_t* src, size_t n);
 
 #define NAND_BANNER_MAGIC 'WIBN'
 
