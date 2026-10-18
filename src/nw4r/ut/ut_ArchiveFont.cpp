@@ -37,118 +37,114 @@ u32 ArchiveFont::GetRequireBufferSize(const void* pBrfnt,
 
     const BinaryFileHeader* pHeader =
         static_cast<const BinaryFileHeader*>(pBrfnt);
-    const FontGlyphGroupsBlock* pGLGR =
-        reinterpret_cast<const FontGlyphGroupsBlock*>(pHeader + 1);
 
-    u32 numUseSheet = 0;
+    // Pointers into the GLGR block and the per-set bitmap sizes. Keeping them
+    // in a local struct (scalarized by the optimizer) gives the original
+    // register allocation.
+    struct {
+        const FontGlyphGroupsBlock* pGLGR;
+        const u32* pSizeCWDH;
+        const u32* pSizeCMAP;
+        const u32* pUseSheets;
+        const u32* pUseCWDH;
+        const u32* pUseCMAP;
+        u32 sheetBytes;
+        u32 cwdhBytes;
+        u32 cmapBytes;
+    } info;
 
+    info.pGLGR = reinterpret_cast<const FontGlyphGroupsBlock*>(pHeader + 1);
     u32 sizeSheetsOfs = RoundUp(sizeof(BinaryFileHeader) +
                                     offsetof(FontGlyphGroupsBlock, body) +
                                     offsetof(FontGlyphGroups, nameOffsets) +
-                                    pGLGR->body.numSet * sizeof(u16),
+                                    info.pGLGR->body.numSet * sizeof(u16),
                                 4);
-    u32 sizeCWDHOfs =
-        RoundUp(sizeSheetsOfs + pGLGR->body.numSheet * sizeof(u32), 4);
-    u32 sizeCMAPOfs =
-        RoundUp(sizeCWDHOfs + pGLGR->body.numCWDH * sizeof(u32), 4);
-    u32 useSheetsOfs =
-        RoundUp(sizeCMAPOfs + pGLGR->body.numCMAP * sizeof(u32), 4);
-
-    u32 sheetBytes = ((pGLGR->body.numSheet + 31) / 32) * sizeof(u32);
-    u32 cwdhBytes = ((pGLGR->body.numCWDH + 31) / 32) * sizeof(u32);
-    u32 cmapBytes = ((pGLGR->body.numCMAP + 31) / 32) * sizeof(u32);
-
-    u32 useCWDHOfs =
-        RoundUp(useSheetsOfs + sheetBytes * pGLGR->body.numSet, 4);
-    u32 useCMAPOfs = RoundUp(useCWDHOfs + cwdhBytes * pGLGR->body.numSet, 4);
-
-    const u32* pSizeCWDH =
-        static_cast<const u32*>(AddOffsetToPtr(pHeader, sizeCWDHOfs));
-    const u32* pSizeCMAP =
-        static_cast<const u32*>(AddOffsetToPtr(pHeader, sizeCMAPOfs));
-
+    info.sheetBytes = ((info.pGLGR->body.numSheet + 31) / 32) * sizeof(u32);
+    info.cwdhBytes = ((info.pGLGR->body.numCWDH + 31) / 32) * sizeof(u32);
+    u32 sizeCWDHOfs = RoundUp(sizeSheetsOfs + info.pGLGR->body.numSheet * sizeof(u32), 4);
+    info.cmapBytes = ((info.pGLGR->body.numCMAP + 31) / 32) * sizeof(u32);
+    u32 sizeCMAPOfs = RoundUp(sizeCWDHOfs + info.pGLGR->body.numCWDH * sizeof(u32), 4);
+    u32 useSheetsOfs = RoundUp(sizeCMAPOfs + info.pGLGR->body.numCMAP * sizeof(u32), 4);
+    u32 useCWDHOfs = RoundUp(useSheetsOfs + info.sheetBytes * info.pGLGR->body.numSet, 4);
+    u32 useCMAPOfs = RoundUp(useCWDHOfs + info.cwdhBytes * info.pGLGR->body.numSet, 4);
+    info.pSizeCWDH = static_cast<const u32*>(AddOffsetToPtr(pHeader, sizeCWDHOfs));
+    info.pSizeCMAP = static_cast<const u32*>(AddOffsetToPtr(pHeader, sizeCMAPOfs));
+    info.pUseSheets = static_cast<const u32*>(AddOffsetToPtr(pHeader, useSheetsOfs));
+    info.pUseCWDH = static_cast<const u32*>(AddOffsetToPtr(pHeader, useCWDHOfs));
+    info.pUseCMAP = static_cast<const u32*>(AddOffsetToPtr(pHeader, useCMAPOfs));
+    u32 numUseSheet = 0;
     u32 totalCWDH = 0;
     u32 totalCMAP = 0;
 
-    const u32* pUseSheets =
-        static_cast<const u32*>(AddOffsetToPtr(pHeader, useSheetsOfs));
-    const u32* pUseCWDH =
-        static_cast<const u32*>(AddOffsetToPtr(pHeader, useCWDHOfs));
-    const u32* pUseCMAP =
-        static_cast<const u32*>(AddOffsetToPtr(pHeader, useCMAPOfs));
-
-    for (int base = 0; base < pGLGR->body.numSheet; base += 32) {
-        const u32* pBits = pUseSheets + base / 32;
+    for (int i = 0; i * 32 < info.pGLGR->body.numSheet; i++) {
         u32 useBits = 0;
 
-        for (int set = 0; set < pGLGR->body.numSet; set++) {
+        for (int set = 0; set < info.pGLGR->body.numSet; set++) {
             const char* pSetName = static_cast<const char*>(
-                AddOffsetToPtr(pHeader, pGLGR->body.nameOffsets[set]));
+                AddOffsetToPtr(pHeader, info.pGLGR->body.nameOffsets[set]));
 
             if (IsNullString(pGlyphGroups) ||
                 IncludeName(pGlyphGroups, pSetName)) {
 
-                useBits |= pBits[set * sheetBytes / sizeof(u32)];
+                useBits |= info.pUseSheets[i + set * info.sheetBytes / sizeof(u32)];
             }
         }
 
         numUseSheet += math::CntBit1(useBits);
     }
 
-    for (int base = 0; base < pGLGR->body.numCWDH; base += 32) {
-        const u32* pBits = pUseCWDH + base / 32;
+    for (int i = 0; i * 32 < info.pGLGR->body.numCWDH; i++) {
         u32 useBits = 0;
 
-        for (int set = 0; set < pGLGR->body.numSet; set++) {
+        for (int set = 0; set < info.pGLGR->body.numSet; set++) {
             const char* pSetName = static_cast<const char*>(
-                AddOffsetToPtr(pHeader, pGLGR->body.nameOffsets[set]));
+                AddOffsetToPtr(pHeader, info.pGLGR->body.nameOffsets[set]));
 
             if (IsNullString(pGlyphGroups) ||
                 IncludeName(pGlyphGroups, pSetName)) {
 
-                useBits |= pBits[set * cwdhBytes / sizeof(u32)];
+                useBits |= info.pUseCWDH[i + set * info.cwdhBytes / sizeof(u32)];
             }
         }
 
         for (int bit = 0; bit < 32; bit++) {
             if ((useBits << bit) & 0x80000000) {
-                totalCWDH += pSizeCWDH[base + bit] - sizeof(BinaryBlockHeader);
+                totalCWDH += info.pSizeCWDH[i * 32 + bit] - sizeof(BinaryBlockHeader);
             }
         }
     }
 
-    for (int base = 0; base < pGLGR->body.numCMAP; base += 32) {
-        const u32* pBits = pUseCMAP + base / 32;
+    for (int i = 0; i * 32 < info.pGLGR->body.numCMAP; i++) {
         u32 useBits = 0;
 
-        for (int set = 0; set < pGLGR->body.numSet; set++) {
+        for (int set = 0; set < info.pGLGR->body.numSet; set++) {
             const char* pSetName = static_cast<const char*>(
-                AddOffsetToPtr(pHeader, pGLGR->body.nameOffsets[set]));
+                AddOffsetToPtr(pHeader, info.pGLGR->body.nameOffsets[set]));
 
             if (IsNullString(pGlyphGroups) ||
                 IncludeName(pGlyphGroups, pSetName)) {
 
-                useBits |= pBits[set * cmapBytes / sizeof(u32)];
+                useBits |= info.pUseCMAP[i + set * info.cmapBytes / sizeof(u32)];
             }
         }
 
         for (int bit = 0; bit < 32; bit++) {
             if ((useBits << bit) & 0x80000000) {
-                totalCMAP += pSizeCMAP[base + bit] - sizeof(BinaryBlockHeader);
+                totalCMAP += info.pSizeCMAP[i * 32 + bit] - sizeof(BinaryBlockHeader);
             }
         }
     }
 
-    u32 sizeSheets = numUseSheet * pGLGR->body.sheetSize;
+    u32 sizeSheets = numUseSheet * info.pGLGR->body.sheetSize;
     u32 sizeCWDHCMAP = totalCWDH + totalCMAP;
-
-    u32 sizeAdjust = RoundUp(pGLGR->body.numSheet * sizeof(u16), 4);
+    u32 sizeAdjust = RoundUp(info.pGLGR->body.numSheet * sizeof(u16), 4);
+    u32 sizeSheetsAligned = RoundUp(sizeSheets, 4);
     u32 sizeWork = Max<u32>(sizeCWDHCMAP, sizeof(CXUncompContextHuffman));
 
     return RoundUp(sizeAdjust + sizeof(FontInformation) +
                        sizeof(FontTextureGlyph),
                    32) +
-           (sizeWork + RoundUp(sizeSheets, 4));
+           (sizeWork + sizeSheetsAligned);
 }
 
 ArchiveFontBase::ConstructResult
