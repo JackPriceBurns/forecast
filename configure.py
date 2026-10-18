@@ -580,7 +580,7 @@ config.libs = [
             Object(NonMatching, "revolution/NAND/NANDOpenClose.c"),
 
             # NdevExi2AD
-            Object(NonMatching, "revolution/NdevExi2AD/DebuggerDriver.c"),
+            Object(Matching, "revolution/NdevExi2AD/DebuggerDriver.c"),
             Object(Matching, "revolution/NdevExi2AD/exi2.c"),
 
             # NET
