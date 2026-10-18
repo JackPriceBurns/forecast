@@ -18,6 +18,62 @@ inline bool IsBitOn(const u32* pBits, u32 index) {
     return (pBits[index / 32] << (index % 32)) & 0x80000000;
 }
 
+inline BinaryFileHeader* GetFileHeader(u8* pBuffer) {
+    return reinterpret_cast<BinaryFileHeader*>(pBuffer);
+}
+
+// Read-only view of a GLGR block (glyph groups) inside a loaded font file
+class GlyphGroupsReader {
+public:
+    explicit GlyphGroupsReader(const BinaryFileHeader* pHeader) {
+        mpHeader = pHeader;
+        mpGLGR = reinterpret_cast<const FontGlyphGroupsBlock*>(pHeader + 1);
+
+        u32 sizeSheetsOfs = RoundUp(sizeof(BinaryFileHeader) +
+                                        offsetof(FontGlyphGroupsBlock, body) +
+                                        offsetof(FontGlyphGroups, nameOffsets) +
+                                        mpGLGR->body.numSet * sizeof(u16),
+                                    4);
+        u32 sizeCWDHOfs =
+            RoundUp(sizeSheetsOfs + mpGLGR->body.numSheet * sizeof(u32), 4);
+        u32 sizeCMAPOfs =
+            RoundUp(sizeCWDHOfs + mpGLGR->body.numCWDH * sizeof(u32), 4);
+        u32 useSheetsOfs =
+            RoundUp(sizeCMAPOfs + mpGLGR->body.numCMAP * sizeof(u32), 4);
+
+        mSheetFlagBytes = ((mpGLGR->body.numSheet + 31) / 32) * sizeof(u32);
+        mpUseSheets =
+            static_cast<const u32*>(AddOffsetToPtr(pHeader, useSheetsOfs));
+    }
+
+    u16 GetNumSheet() const {
+        return mpGLGR->body.numSheet;
+    }
+
+    u16 GetNumSet() const {
+        return mpGLGR->body.numSet;
+    }
+
+    u16 GetGlyphsPerSheet() const {
+        return mpGLGR->body.glyphsPerSheet;
+    }
+
+    const char* GetSetName(int set) const {
+        return static_cast<const char*>(
+            AddOffsetToPtr(mpHeader, mpGLGR->body.nameOffsets[set]));
+    }
+
+    bool IsUseSheet(int set, int sheet) const {
+        return IsBitOn(mpUseSheets, sheet + set * mSheetFlagBytes * 8);
+    }
+
+private:
+    const BinaryFileHeader* mpHeader;     // at 0x0
+    const FontGlyphGroupsBlock* mpGLGR;   // at 0x4
+    const u32* mpUseSheets;               // at 0x8
+    u32 mSheetFlagBytes;                  // at 0xC
+};
+
 } // namespace
 
 const char ArchiveFontBase::LOAD_GLYPH_ALL[1] = "";
@@ -197,26 +253,10 @@ ArchiveFontBase::ConstructOpAnalyzeFileHeader(ConstructContext* pContext,
 ArchiveFontBase::ConstructResult
 ArchiveFontBase::ConstructOpAnalyzeGLGR(ConstructContext* pContext,
                                         CachedStreamReader* pStream) {
-    // Declaration order chosen for register allocation (still 24 diffs off)
+    BinaryFileHeader* pHeader = GetFileHeader(pContext->pCurrent);
     u8* pBlock;
-    u16 numSheet;
-    const u32* pUseSheets;
-    const FontGlyphGroupsBlock* pGLGR;
-    BinaryFileHeader* pHeader;
-    u32 bodySize;
-    u32 adjustSize;
-    u32 sheetBytes;
-    u16* pAdjustEnd;
     u8* pBlockEnd;
-    u16 glyphsPerSheet;
-    u16* pDst;
-    u32 totalSize;
-    u16 numBlocks;
-    u16* pAdjust;
-
-    pHeader =
-        reinterpret_cast<BinaryFileHeader*>(pContext->pCurrent);
-    bodySize = pContext->header.size - sizeof(BinaryBlockHeader);
+    u32 bodySize = pContext->header.size - sizeof(BinaryBlockHeader);
 
     if (pHeader->signature != 'RFNA') {
         return CONSTRUCT_ERROR;
@@ -232,8 +272,8 @@ ArchiveFontBase::ConstructOpAnalyzeGLGR(ConstructContext* pContext,
         return CONSTRUCT_ERROR;
     }
 
-    pBlock = reinterpret_cast<u8*>(pHeader + 1);
-    totalSize = sizeof(BinaryFileHeader) + pContext->header.size;
+    pBlock = pContext->pCurrent + sizeof(BinaryFileHeader);
+    u32 totalSize = sizeof(BinaryFileHeader) + pContext->header.size;
     pBlockEnd = pBlock + pContext->header.size;
 
     std::memcpy(pBlock, &pContext->header, sizeof(BinaryBlockHeader));
@@ -243,32 +283,16 @@ ArchiveFontBase::ConstructOpAnalyzeGLGR(ConstructContext* pContext,
         return CONSTRUCT_ERROR;
     }
 
-    pGLGR =
-        reinterpret_cast<FontGlyphGroupsBlock*>(pHeader + 1);
+    GlyphGroupsReader groups(pHeader);
 
-    u32 sizeSheetsOfs = RoundUp(sizeof(BinaryFileHeader) +
-                                    offsetof(FontGlyphGroupsBlock, body) +
-                                    offsetof(FontGlyphGroups, nameOffsets) +
-                                    pGLGR->body.numSet * sizeof(u16),
-                                4);
-    u32 sizeCWDHOfs =
-        RoundUp(sizeSheetsOfs + pGLGR->body.numSheet * sizeof(u32), 4);
-    u32 sizeCMAPOfs =
-        RoundUp(sizeCWDHOfs + pGLGR->body.numCWDH * sizeof(u32), 4);
-    u32 useSheetsOfs =
-        RoundUp(sizeCMAPOfs + pGLGR->body.numCMAP * sizeof(u32), 4);
+    u16 numSheet = groups.GetNumSheet();
+    u16 glyphsPerSheet = groups.GetGlyphsPerSheet();
+    u16 numBlocks = pHeader->dataBlocks;
 
-    sheetBytes = ((pGLGR->body.numSheet + 31) / 32) * sizeof(u32);
-    pUseSheets =
-        static_cast<const u32*>(AddOffsetToPtr(pHeader, useSheetsOfs));
+    u32 adjustSize = RoundUp(numSheet * sizeof(u16), 4);
 
-    numSheet = pGLGR->body.numSheet;
-    glyphsPerSheet = pGLGR->body.glyphsPerSheet;
-    numBlocks = pHeader->dataBlocks;
-
-    adjustSize = RoundUp(numSheet * sizeof(u16), 4);
-
-    pAdjust = reinterpret_cast<u16*>(
+    // Build the table at the end of the buffer first, then move it into place
+    u16* pAdjust = reinterpret_cast<u16*>(
         (reinterpret_cast<u32>(pHeader) + pContext->GetRemain() - adjustSize) &
         ~1);
 
@@ -277,19 +301,18 @@ ArchiveFontBase::ConstructOpAnalyzeGLGR(ConstructContext* pContext,
         return CONSTRUCT_ERROR;
     }
 
-    for (int i = 0; i < pGLGR->body.numSheet; i++) {
+    for (int i = 0; i < groups.GetNumSheet(); i++) {
         pAdjust[i] = 0;
     }
 
-    for (int set = 0; set < pGLGR->body.numSet; set++) {
-        const char* pSetName = static_cast<const char*>(
-            AddOffsetToPtr(pHeader, pGLGR->body.nameOffsets[set]));
+    for (int set = 0; set < groups.GetNumSet(); set++) {
+        const char* pSetName = groups.GetSetName(set);
 
         if (IsNullString(pContext->pGlyphGroups) ||
             IncludeName(pContext->pGlyphGroups, pSetName)) {
 
-            for (int sheet = 0; sheet < pGLGR->body.numSheet; sheet++) {
-                if (IsBitOn(pUseSheets, sheet + set * sheetBytes * 8)) {
+            for (int sheet = 0; sheet < groups.GetNumSheet(); sheet++) {
+                if (groups.IsUseSheet(set, sheet)) {
                     pAdjust[sheet] = 1;
                 }
             }
@@ -297,18 +320,18 @@ ArchiveFontBase::ConstructOpAnalyzeGLGR(ConstructContext* pContext,
     }
 
     u16 adjust = 0;
-    for (int i = 0; i < pGLGR->body.numSheet; i++) {
+    for (int i = 0; i < groups.GetNumSheet(); i++) {
         if (pAdjust[i] == 1) {
             pAdjust[i] = adjust;
         } else {
             pAdjust[i] = 0xFFFF;
-            adjust += pGLGR->body.glyphsPerSheet;
+            adjust += groups.GetGlyphsPerSheet();
         }
     }
 
-    pDst = reinterpret_cast<u16*>(pContext->pCurrent);
+    u16* pDst = reinterpret_cast<u16*>(pContext->pCurrent);
     pContext->Advance(adjustSize);
-    pAdjustEnd = pAdjust + numSheet;
+    u16* pAdjustEnd = pAdjust + numSheet;
     std::memmove(pDst, pAdjust, (pAdjustEnd - pAdjust) * sizeof(u16));
 
     pContext->pGlyphIndexAdjustArray = pDst;

@@ -966,7 +966,7 @@ config.libs = [
             Object(Matching, "nw4r/ut/ut_Font.cpp"),
             Object(Matching, "nw4r/ut/ut_ResFontBase.cpp"),
             Object(Matching, "nw4r/ut/ut_ResFont.cpp"),
-            Object(NonMatching, "nw4r/ut/ut_ArchiveFontBase.cpp"),
+            Object(Matching, "nw4r/ut/ut_ArchiveFontBase.cpp"),
             Object(NonMatching, "nw4r/ut/ut_ArchiveFont.cpp"),
             Object(Matching, "nw4r/ut/ut_CharWriter.cpp"),
             Object(Matching, "nw4r/ut/ut_TextWriterBase.cpp"),
