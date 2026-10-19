@@ -556,11 +556,22 @@ config.libs = [
             Object(NonMatching, "revolution/GX/GXPixel.c"),
             Object(Matching, "revolution/GX/GXTransform.c"),
 
+            # HBM
+            Object(NonMatching, "revolution/HBM/HBMAnmController.cpp"),
+            Object(NonMatching, "revolution/HBM/HBMBase.cpp"),
+            Object(NonMatching, "revolution/HBM/HBMController.cpp"),
+            Object(NonMatching, "revolution/HBM/HBMFrameController.cpp"),
+            Object(NonMatching, "revolution/HBM/HBMGUIManager.cpp"),
+            Object(NonMatching, "revolution/HBM/HBMRemoteSpk.cpp"),
+
             # IPC
             Object(NonMatching, "revolution/IPC/ipcclt.c"),
             Object(Matching, "revolution/IPC/ipcMain.c"),
             Object(Matching, "revolution/IPC/ipcProfile.c"),
             Object(Matching, "revolution/IPC/memory.c"),
+
+            # KPAD
+            Object(NonMatching, "revolution/KPAD/KPAD.c"),
 
             # MEM
             Object(Matching, "revolution/MEM/mem_allocator.c"),
@@ -697,6 +708,9 @@ config.libs = [
             # WPAD
             Object(NonMatching, "revolution/WPAD/debug_msg.c"),
             Object(NonMatching, "revolution/WPAD/WPAD.c"),
+            Object(NonMatching, "revolution/WPAD/WPADEncrypt.c"),
+            Object(NonMatching, "revolution/WPAD/WPADHIDParser.c"),
+            Object(NonMatching, "revolution/WPAD/WPADMem.c"),
 
             # WUD
             Object(Matching, "revolution/WUD/debug_msg.c"),

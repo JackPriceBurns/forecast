@@ -416,6 +416,40 @@ revolution/NWC24/NWC24Ipc.c:
 	.text       start:0x8006DC10 end:0x8006DD84
 	.sbss       start:0x80330D40 end:0x80330D44
 
+revolution/HBM/HBMBase.cpp:
+	.text       start:0x80071FC0 end:0x8007B888
+	.rodata     start:0x80193DC8 end:0x80194078
+	.data       start:0x801B4730 end:0x801B5320
+	.bss        start:0x80288D60 end:0x80288D98
+	.sdata      start:0x80330300 end:0x803303D0
+	.sbss       start:0x80330D60 end:0x80330D68
+	.sdata2     start:0x80332168 end:0x803321E0
+
+revolution/HBM/HBMAnmController.cpp:
+	.text       start:0x8007B888 end:0x8007B994
+	.data       start:0x801B5320 end:0x801B5330
+
+revolution/HBM/HBMFrameController.cpp:
+	.text       start:0x8007B994 end:0x8007BB34
+	.sdata2     start:0x803321E0 end:0x803321E8
+
+revolution/HBM/HBMGUIManager.cpp:
+	.text       start:0x8007BB34 end:0x8007CF6C
+	.data       start:0x801B5330 end:0x801B5488
+	.sbss       start:0x80330D68 end:0x80330D70
+	.sdata2     start:0x803321E8 end:0x803321F8
+
+revolution/HBM/HBMController.cpp:
+	.text       start:0x8007CF6C end:0x8007DAB4
+	.bss        start:0x80288D98 end:0x80288F28
+	.sbss       start:0x80330D70 end:0x80330D78
+	.sdata2     start:0x803321F8 end:0x80332208
+
+revolution/HBM/HBMRemoteSpk.cpp:
+	.text       start:0x8007DAB4 end:0x8007E2A8
+	.data       start:0x801B5488 end:0x801B5498
+	.sbss       start:0x80330D78 end:0x80330D80
+
 nw4r/ef/ef_draworder.cpp:
 	.text       start:0x80084C10 end:0x80084D10
 
@@ -1427,6 +1461,41 @@ revolution/IPC/ipcProfile.c:
 revolution/PAD/Pad.c:
 	.text       start:0x8011BF9C end:0x8011BFF8
 	.sbss       start:0x803317B0 end:0x803317B4
+
+revolution/WPAD/WPAD.c:
+	.text       start:0x8011BFF8 end:0x80123758
+	.rodata     start:0x801974E8 end:0x80197528
+	.data       start:0x801CD3F0 end:0x801CD6E8
+	.bss        start:0x802F1460 end:0x802F4B88
+	.sdata      start:0x80330800 end:0x80330810
+	.sbss       start:0x803317B8 end:0x803317E8
+	.sdata2     start:0x80333010 end:0x80333018
+
+revolution/WPAD/WPADHIDParser.c:
+	.text       start:0x80123758 end:0x80128BF8
+	.data       start:0x801CD6E8 end:0x801CDC88
+	.bss        start:0x802F4B88 end:0x802F4BF0
+	.sbss       start:0x803317E8 end:0x80331800
+	.sdata2     start:0x80333018 end:0x80333078
+
+revolution/WPAD/WPADMem.c:
+	.bss        start:0x802F4BF0 end:0x802F4C40
+
+revolution/WPAD/WPADEncrypt.c:
+	.text       start:0x80128BF8 end:0x80129CA0
+	.data       start:0x801CDC88 end:0x801CEFB0
+	.sbss       start:0x80331800 end:0x80331808
+
+revolution/WPAD/debug_msg.c:
+	.text       start:0x80129CA0 end:0x80129CF0
+
+revolution/KPAD/KPAD.c:
+	.text       start:0x80129CF0 end:0x8012CC94
+	.data       start:0x801CEFB0 end:0x801CF008
+	.bss        start:0x802F4C40 end:0x802F6120
+	.sdata      start:0x80330810 end:0x80330880
+	.sbss       start:0x80331808 end:0x80331828
+	.sdata2     start:0x80333078 end:0x803330E8
 
 revolution/EUART/euart.c:
 	.text       start:0x8012CC94 end:0x8012D004
