@@ -1290,6 +1290,30 @@ revolution/DB/db.c:
 	.data       start:0x801C6F30 end:0x801C6F48
 	.sbss       start:0x80331360 end:0x80331368
 
+revolution/VI/vi.c:
+	.text       start:0x800F3C7C end:0x800F6620
+	.data       start:0x801C6F48 end:0x801C7480
+	.bss        start:0x802CC810 end:0x802CC980
+	.sdata      start:0x80330580 end:0x803305A0
+	.sbss       start:0x80331368 end:0x80331418
+
+revolution/VI/i2c.c:
+	.text       start:0x800F6620 end:0x800F703C
+	.sdata      start:0x803305A0 end:0x803305A8
+	.sbss       start:0x80331418 end:0x80331420
+
+revolution/VI/vi3in1.c:
+	.text       start:0x800F703C end:0x800F86E0
+	.data       start:0x801C7480 end:0x801C7A20
+	.bss        start:0x802CC980 end:0x802CC9A0
+	.sdata      start:0x803305A8 end:0x803305C0
+	.sbss       start:0x80331420 end:0x80331438
+
+revolution/MTX/mtx.c:
+	.text       start:0x800F86E0 end:0x800F9254
+	.sdata      start:0x803305C0 end:0x803305C8
+	.sdata2     start:0x80332E00 end:0x80332E20
+
 revolution/MTX/mtxvec.c:
 	.text       start:0x800F9254 end:0x800F92A8
 
@@ -1301,31 +1325,76 @@ revolution/MTX/vec.c:
 	.text       start:0x800F94C8 end:0x800F96D0
 	.sdata2     start:0x80332E38 end:0x80332E44
 
+revolution/GX/GXInit.c:
+	.text       start:0x800F96D0 end:0x800FA89C
+	.data       start:0x801C7A20 end:0x801C7C60
+	.bss        start:0x802CC9A0 end:0x802CD020
+	.sdata      start:0x803305C8 end:0x803305D0
+	.sbss       start:0x80331438 end:0x80331460
+	.sdata2     start:0x80332E48 end:0x80332E70
+
+revolution/GX/GXFifo.c:
+	.text       start:0x800FA89C end:0x800FB258
+	.data       start:0x801C7C60 end:0x801C7C90
+	.bss        start:0x802CD020 end:0x802CD068
+	.sbss       start:0x80331460 end:0x80331480
+
 revolution/GX/GXAttr.c:
 	.text       start:0x800FB258 end:0x800FC47C
 	.data       start:0x801C7C90 end:0x801C7F04
 	.sdata      start:0x803305D0 end:0x803305DC
 
+revolution/GX/GXMisc.c:
+	.text       start:0x800FC47C end:0x800FCBE8
+	.sbss       start:0x80331480 end:0x80331498
+
 revolution/GX/GXGeometry.c:
 	.text       start:0x800FCBE8 end:0x800FD1A8
+
+revolution/GX/GXFrameBuf.c:
+	.text       start:0x800FD1A8 end:0x800FDBE8
+	.data       start:0x801C7F08 end:0x801C7FF8
+	.sdata2     start:0x80332E70 end:0x80332E80
 
 revolution/GX/GXLight.c:
 	.text       start:0x800FDBE8 end:0x800FE2F8
 	.data       start:0x801C7FF8 end:0x801C8014
 	.sdata2     start:0x80332E80 end:0x80332EB4
 
+revolution/GX/GXTexture.c:
+	.text       start:0x800FE2F8 end:0x800FF178
+	.data       start:0x801C8018 end:0x801C8148
+	.sdata      start:0x803305E0 end:0x80330628
+	.sdata2     start:0x80332EB8 end:0x80332EF0
+
 revolution/GX/GXBump.c:
 	.text       start:0x800FF178 end:0x800FF5C4
 	.sdata2     start:0x80332EF0 end:0x80332EF4
+
+revolution/GX/GXTev.c:
+	.text       start:0x800FF5C4 end:0x800FFC44
+	.data       start:0x801C8148 end:0x801C81C0
+
+revolution/GX/GXPixel.c:
+	.text       start:0x800FFC44 end:0x801003A8
+	.data       start:0x801C81C0 end:0x801C81E0
+	.sdata2     start:0x80332EF8 end:0x80332F48
 
 revolution/GX/GXDraw.c:
 	.text       start:0x801003A8 end:0x801017EC
 	.bss        start:0x802CD068 end:0x802CD2F0
 	.sdata2     start:0x80332F48 end:0x80332F78
 
+revolution/GX/GXDisplayList.c:
+	.text       start:0x801017EC end:0x80101860
+
 revolution/GX/GXTransform.c:
 	.text       start:0x80101860 end:0x80101D7C
 	.sdata2     start:0x80332F78 end:0x80332F84
+
+revolution/GX/GXPerf.c:
+	.text       start:0x80101D7C end:0x801025B8
+	.data       start:0x801C81E0 end:0x801C82D0
 
 revolution/DVD/dvdqueue.c:
 	.text       start:0x80107E20 end:0x80108078

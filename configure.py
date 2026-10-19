@@ -551,9 +551,16 @@ config.libs = [
             Object(Matching, "revolution/GX/GXBump.c"),
             Object(NonMatching, "revolution/GX/GXDisplayList.c"),
             Object(NonMatching, "revolution/GX/GXDraw.c"),
+            Object(NonMatching, "revolution/GX/GXFifo.c"),
+            Object(NonMatching, "revolution/GX/GXFrameBuf.c"),
             Object(Matching, "revolution/GX/GXGeometry.c"),
+            Object(NonMatching, "revolution/GX/GXInit.c"),
             Object(Matching, "revolution/GX/GXLight.c"),
+            Object(NonMatching, "revolution/GX/GXMisc.c"),
+            Object(NonMatching, "revolution/GX/GXPerf.c"),
             Object(NonMatching, "revolution/GX/GXPixel.c"),
+            Object(NonMatching, "revolution/GX/GXTev.c"),
+            Object(NonMatching, "revolution/GX/GXTexture.c"),
             Object(Matching, "revolution/GX/GXTransform.c"),
 
             # IPC
@@ -570,6 +577,7 @@ config.libs = [
             Object(NonMatching, "revolution/MEM/mem_list.c"),
 
             # MTX
+            Object(NonMatching, "revolution/MTX/mtx.c"),
             Object(Matching, "revolution/MTX/mtx44.c"),
             Object(Matching, "revolution/MTX/mtxvec.c"),
             Object(Matching, "revolution/MTX/vec.c"),
@@ -689,7 +697,9 @@ config.libs = [
             Object(Matching, "revolution/VF/nand_drv.c"),
 
             # VI
+            Object(NonMatching, "revolution/VI/i2c.c"),
             Object(NonMatching, "revolution/VI/vi.c"),
+            Object(NonMatching, "revolution/VI/vi3in1.c"),
 
             # WENC
             Object(NonMatching, "revolution/WENC/wenc.c"),
