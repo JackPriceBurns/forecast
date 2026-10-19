@@ -289,6 +289,7 @@ revolution/VF/pf_clib.c:
 
 revolution/VF/pf_code.c:
 	.text       start:0x800462D4 end:0x800462F0
+	.rodata     start:0x8018FA28 end:0x8018FA88
 
 revolution/VF/pf_service.c:
 	.text       start:0x800462F0 end:0x80046418
@@ -327,6 +328,11 @@ revolution/VF/pf_cluster.c:
 revolution/VF/pf_dir.c:
 	.text       start:0x8004D2C8 end:0x8004E064
 
+revolution/VF/pf_entry.c:
+	.text       start:0x8004E3C0 end:0x8004FF64
+	.data       start:0x801B3E98 end:0x801B3EA8
+	.sdata2     start:0x80332150 end:0x80332158
+
 revolution/VF/pf_entry_iterator.c:
 	.text       start:0x8004FF64 end:0x80051988
 	.sdata      start:0x80330200 end:0x80330228
@@ -344,8 +350,16 @@ revolution/VF/pf_fat16.c:
 revolution/VF/pf_fat32.c:
 	.text       start:0x800558BC end:0x80055EFC
 
+revolution/VF/pf_fatfs.c:
+	.text       start:0x80055EFC end:0x80055F00
+
 revolution/VF/pf_file.c:
 	.text       start:0x80055F00 end:0x800594A4
+
+revolution/VF/pf_path.c:
+	.text       start:0x800594A4 end:0x8005C300
+	.sdata      start:0x80330228 end:0x80330258
+	.sdata2     start:0x80332158 end:0x80332168
 
 revolution/VF/pf_sector.c:
 	.text       start:0x8005C300 end:0x8005C9F0
@@ -365,11 +379,53 @@ revolution/VF/pf_api_util.c:
 revolution/VF/pf_attach.c:
 	.text       start:0x8005EAD8 end:0x8005EB5C
 
+revolution/VF/pf_detach.c:
+	.text       start:0x8005EB5C end:0x8005EB84
+
+revolution/VF/pf_errnum.c:
+	.text       start:0x8005EB84 end:0x8005EBA8
+
+revolution/VF/pf_fclose.c:
+	.text       start:0x8005EBA8 end:0x8005EBCC
+
+revolution/VF/pf_finfo.c:
+	.text       start:0x8005EBCC end:0x8005EBF0
+
 revolution/VF/pf_fopen.c:
 	.text       start:0x8005EBF0 end:0x8005EC8C
 
+revolution/VF/pf_format.c:
+	.text       start:0x8005EC8C end:0x8005ECB4
+
+revolution/VF/pf_fread.c:
+	.text       start:0x8005ECB4 end:0x8005ECDC
+
+revolution/VF/pf_fseek.c:
+	.text       start:0x8005ECDC end:0x8005ED00
+
+revolution/VF/pf_fsfirst.c:
+	.text       start:0x8005ED00 end:0x8005ED74
+
+revolution/VF/pf_fsnext.c:
+	.text       start:0x8005ED74 end:0x8005ED98
+
+revolution/VF/pf_fwrite.c:
+	.text       start:0x8005ED98 end:0x8005EDC0
+
+revolution/VF/pf_getdev.c:
+	.text       start:0x8005EDC0 end:0x8005EDE8
+
 revolution/VF/pf_init_prfile2.c:
 	.text       start:0x8005EDE8 end:0x8005EE28
+
+revolution/VF/pf_mkdir.c:
+	.text       start:0x8005EE28 end:0x8005EE78
+
+revolution/VF/pf_remove.c:
+	.text       start:0x8005EE78 end:0x8005EEC8
+
+revolution/VF/pf_unmount.c:
+	.text       start:0x8005EEC8 end:0x8005EEF0
 
 revolution/VF/pf_filelock.c:
 	.text       start:0x8005EEF0 end:0x8005EF04
@@ -394,11 +450,21 @@ revolution/VF/d_hash.c:
 	.text       start:0x8006229C end:0x8006291C
 	.bss        start:0x802883B8 end:0x802885F8
 
+revolution/VF/d_time.c:
+	.text       start:0x8006291C end:0x800629FC
+
+revolution/VF/d_common.c:
+	.text       start:0x800629FC end:0x80063694
+	.bss        start:0x802885F8 end:0x80288800
+
 revolution/VF/nand_drv.c:
 	.text       start:0x80063694 end:0x80066604
 	.rodata     start:0x80193D40 end:0x80193D60
 	.bss        start:0x80288800 end:0x802889A0
 	.sbss       start:0x80330CB8 end:0x80330CC0
+
+revolution/VF/sd_drv.c:
+	.text       start:0x80066604 end:0x80066608
 
 revolution/NWC24/NWC24FileApi.c:
 	.text       start:0x80068E54 end:0x8006A4D8
