@@ -579,11 +579,16 @@ config.libs = [
             Object(NonMatching, "revolution/NAND/NANDCore.c"),
             Object(NonMatching, "revolution/NAND/NANDOpenClose.c"),
 
+            # NCD
+            Object(NonMatching, "revolution/NCD/ncdsystem.c"),
+
             # NdevExi2AD
             Object(Matching, "revolution/NdevExi2AD/DebuggerDriver.c"),
             Object(Matching, "revolution/NdevExi2AD/exi2.c"),
 
             # NET
+            Object(NonMatching, "revolution/NET/netcrc.c"),
+            Object(NonMatching, "revolution/NET/neterror.c"),
             Object(NonMatching, "revolution/NET/nettime.c"),
             Object(NonMatching, "revolution/NET/NETVersion.c"),
 
@@ -646,6 +651,10 @@ config.libs = [
             # SI
             Object(NonMatching, "revolution/SI/SIBios.c"),
             Object(NonMatching, "revolution/SI/SISamplingRate.c"),
+
+            # SO
+            Object(NonMatching, "revolution/SO/soBasic.c"),
+            Object(NonMatching, "revolution/SO/soCommon.c"),
 
             # TPL
             Object(Matching, "revolution/TPL/TPL.c"),
