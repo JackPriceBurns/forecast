@@ -451,6 +451,7 @@ config.libs = [
             Object(Matching, "revolution/BTE/main/bte_hcisu.c"),
             Object(Matching, "revolution/BTE/main/bte_init.c"),
             Object(Matching, "revolution/BTE/main/bte_logmsg.c"),
+            Object(NonMatching, "revolution/BTE/main/bte_main.c"),
 
             # BTE/rvl
             Object(Matching, "revolution/BTE/rvl/gki_ppc.c"),
@@ -462,6 +463,7 @@ config.libs = [
             Object(NonMatching, "revolution/BTE/stack/btm/btm_acl.c"),
             Object(NonMatching, "revolution/BTE/stack/btm/btm_dev.c"),
             Object(NonMatching, "revolution/BTE/stack/btm/btm_devctl.c"),
+            Object(NonMatching, "revolution/BTE/stack/btm/btm_discovery.c"),
             Object(NonMatching, "revolution/BTE/stack/btm/btm_inq.c"),
             Object(NonMatching, "revolution/BTE/stack/btm/btm_main.c"),
             Object(NonMatching, "revolution/BTE/stack/btm/btm_pm.c"),
@@ -473,10 +475,19 @@ config.libs = [
             Object(NonMatching, "revolution/BTE/stack/btu/btu_init.c"),
             Object(NonMatching, "revolution/BTE/stack/btu/btu_task.c"),
 
+            # BTE/stack/gap
+            Object(NonMatching, "revolution/BTE/stack/gap/gap_api.c"),
+            Object(NonMatching, "revolution/BTE/stack/gap/gap_conn.c"),
+            Object(NonMatching, "revolution/BTE/stack/gap/gap_utils.c"),
+
             # BTE/stack/hcic
             Object(NonMatching, "revolution/BTE/stack/hcic/hcicmds.c"),
 
             # BTE/stack/hid
+            Object(NonMatching, "revolution/BTE/stack/hid/hidd_api.c"),
+            Object(NonMatching, "revolution/BTE/stack/hid/hidd_conn.c"),
+            Object(NonMatching, "revolution/BTE/stack/hid/hidd_mgmt.c"),
+            Object(NonMatching, "revolution/BTE/stack/hid/hidd_pm.c"),
             Object(NonMatching, "revolution/BTE/stack/hid/hidh_api.c"),
             Object(NonMatching, "revolution/BTE/stack/hid/hidh_conn.c"),
 
@@ -511,6 +522,9 @@ config.libs = [
             Object(NonMatching, "revolution/BTE/stack/sdp/sdp_main.c"),
             Object(NonMatching, "revolution/BTE/stack/sdp/sdp_server.c"),
             Object(NonMatching, "revolution/BTE/stack/sdp/sdp_utils.c"),
+
+            # BTE/stack/wbt
+            Object(NonMatching, "revolution/BTE/stack/wbt/wbt_ext.c"),
 
             # CNT
             Object(Matching, "revolution/CNT/cnt.c"),

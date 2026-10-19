@@ -28,7 +28,6 @@
 #include <cstdlib>
 #include <cstring>
 #include <cstdio>
-#include <stddef.h>
 
 #include "bt_types.h"
 #include "gki.h"

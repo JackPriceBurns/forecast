@@ -1,5 +1,17 @@
 /******************************************************************************
  *
+ *  NOTICE OF CHANGES
+ *  2026/10/09:
+ *      - Remove DI discovery and inquiry result fields missing from RVL target
+ * 
+ *  Compile with REVOLUTION defined to include these changes.
+ * 
+ ******************************************************************************/
+
+
+
+/******************************************************************************
+ *
  *  Copyright (C) 2003-2012 Broadcom Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -221,8 +233,10 @@ const tBTA_DM_LMP_VER_INFO bta_role_switch_blacklist[BTA_DM_MAX_ROLE_SWITCH_BLAC
         {0x00,0x00,0x00}
 };
 
+#if (SDP_RAW_DATA_INCLUDED == TRUE) || (BLE_INCLUDED == TRUE && BTA_GATT_INCLUDED == TRUE)
 #define MAX_DISC_RAW_DATA_BUF       (4096)
 UINT8 g_disc_raw_data_buf[MAX_DISC_RAW_DATA_BUF];
+#endif
 
 /*******************************************************************************
 **
@@ -1267,6 +1281,7 @@ void bta_dm_discover (tBTA_DM_MSG *p_data)
 ** Returns          void
 **
 *******************************************************************************/
+#ifndef REVOLUTION
 void bta_dm_di_disc_cmpl(tBTA_DM_MSG *p_data)
 {
     tBTA_DM_DI_DISC_CMPL    di_disc;
@@ -1285,6 +1300,7 @@ void bta_dm_di_disc_cmpl(tBTA_DM_MSG *p_data)
     bta_dm_di_cb.p_di_db = NULL;
     bta_dm_search_cb.p_search_cback(BTA_DM_DI_DISC_CMPL_EVT, (tBTA_DM_SEARCH *) &di_disc);
 }
+#endif
 
 /*******************************************************************************
 **
@@ -1687,6 +1703,7 @@ void bta_dm_sdp_result (tBTA_DM_MSG *p_data)
                        APPL_TRACE_ERROR1("%s: Unable to allocate memory for uuid_list", __FUNCTION__);
                     }
                 }
+#if (SDP_RAW_DATA_INCLUDED == TRUE)
                 //copy the raw_data to the discovery result  structure
                 //
                 APPL_TRACE_DEBUG2("bta_dm_sdp_result (raw_data used = 0x%x raw_data_ptr = 0x%x)\r\n",bta_dm_search_cb.p_sdp_db->raw_used, bta_dm_search_cb.p_sdp_db->raw_data);
@@ -1714,6 +1731,7 @@ void bta_dm_sdp_result (tBTA_DM_MSG *p_data)
                 else {
                     APPL_TRACE_DEBUG0("bta_dm_sdp_result raw data size is 0 or raw_data is null!!\r\n");
                 }
+#endif
                 /* Done with p_sdp_db. Free it */
                 bta_dm_free_sdp_db(NULL);
                 p_msg->disc_result.result.disc_res.services = bta_dm_search_cb.services_found;
@@ -1787,9 +1805,11 @@ void bta_dm_search_cmpl (tBTA_DM_MSG *p_data)
     utl_freebuf((void **)&bta_dm_search_cb.p_srvc_uuid);
 #endif
 
+#ifndef REVOLUTION
     if (p_data->hdr.layer_specific == BTA_DM_API_DI_DISCOVER_EVT)
         bta_dm_di_disc_cmpl(p_data);
     else
+#endif
         bta_dm_search_cb.p_search_cback(BTA_DM_DISC_CMPL_EVT, NULL);
 }
 
@@ -2128,10 +2148,12 @@ static void bta_dm_find_services ( BD_ADDR bd_addr)
                 SDP_InitDiscoveryDb (bta_dm_search_cb.p_sdp_db, BTA_DM_SDP_DB_SIZE, 1, &uuid, 0, NULL);
 
 
+#if (SDP_RAW_DATA_INCLUDED == TRUE)
                 memset(g_disc_raw_data_buf, 0, sizeof(g_disc_raw_data_buf));
                 bta_dm_search_cb.p_sdp_db->raw_data = g_disc_raw_data_buf;
 
                 bta_dm_search_cb.p_sdp_db->raw_size = MAX_DISC_RAW_DATA_BUF;
+#endif
 
                 if (!SDP_ServiceSearchAttributeRequest (bd_addr, bta_dm_search_cb.p_sdp_db, &bta_dm_sdp_callback))
                 {
@@ -2401,12 +2423,16 @@ static void bta_dm_inq_results_cb (tBTM_INQ_RESULTS *p_inq, UINT8 *p_eir)
 
     tBTA_DM_SEARCH     result;
     tBTM_INQ_INFO      *p_inq_info;
+#ifndef REVOLUTION
     UINT16             service_class;
+#endif
 
     bdcpy(result.inq_res.bd_addr, p_inq->remote_bd_addr);
     memcpy(result.inq_res.dev_class, p_inq->dev_class, DEV_CLASS_LEN);
+#ifndef REVOLUTION
     BTM_COD_SERVICE_CLASS(service_class, p_inq->dev_class);
     result.inq_res.is_limited = (service_class & BTM_COD_SERVICE_LMTD_DISCOVER)?TRUE:FALSE;
+#endif
     result.inq_res.rssi = p_inq->rssi;
 
 #if (BLE_INCLUDED == TRUE)
@@ -2421,8 +2447,10 @@ static void bta_dm_inq_results_cb (tBTM_INQ_RESULTS *p_inq, UINT8 *p_eir)
 
     if((p_inq_info = BTM_InqDbRead(p_inq->remote_bd_addr)) != NULL)
     {
+#ifndef REVOLUTION
         /* initialize remt_name_not_required to FALSE so that we get the name by default */
         result.inq_res.remt_name_not_required = FALSE;
+#endif
 
     }
 
@@ -2433,8 +2461,10 @@ static void bta_dm_inq_results_cb (tBTM_INQ_RESULTS *p_inq, UINT8 *p_eir)
     {
         /* application indicates if it knows the remote name, inside the callback
          copy that to the inquiry data base*/
+#ifndef REVOLUTION
         if(result.inq_res.remt_name_not_required)
             p_inq_info->appl_knows_rem_name = TRUE;
+#endif
 
     }
 

@@ -1,5 +1,17 @@
 /******************************************************************************
  *
+ *  NOTICE OF CHANGES
+ *  2026/10/09:
+ *      - Remove #include of log.h (external Android dependency)
+ * 
+ *  Compile with REVOLUTION defined to include these changes.
+ * 
+ ******************************************************************************/
+
+
+
+/******************************************************************************
+ *
  *  Copyright (C) 1999-2012 Broadcom Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,11 +48,13 @@
 #include "sdpint.h"
 #include "btu.h"
 
+#ifndef REVOLUTION
 #include <cutils/log.h>
 #define info(fmt, ...)  LOGI ("%s: " fmt,__FUNCTION__,  ## __VA_ARGS__)
 #define debug(fmt, ...) LOGD ("%s: " fmt,__FUNCTION__,  ## __VA_ARGS__)
 #define error(fmt, ...) LOGE ("## ERROR : %s: " fmt "##",__FUNCTION__,  ## __VA_ARGS__)
 #define asrt(s) if(!(s)) LOGE ("## %s assert %s failed at line:%d ##",__FUNCTION__, #s, __LINE__)
+#endif
 
 
 /**********************************************************************

@@ -1,5 +1,18 @@
 /******************************************************************************
  *
+ *  NOTICE OF CHANGES
+ *  2026/10/09:
+ *      - Remove #include of in.h (external dependency)
+ *      - Remove sdpu_uuid16_to_uuid128 (not in RVL version)
+ * 
+ *  Compile with REVOLUTION defined to include these changes.
+ * 
+ ******************************************************************************/
+
+
+
+/******************************************************************************
+ *
  *  Copyright (C) 1999-2012 Broadcom Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +37,9 @@
 
 #include <cstdlib>
 #include <cstring>
+#ifndef REVOLUTION
 #include <netinet/in.h>
+#endif
 #include <cstdio>
 
 #include "gki.h"
@@ -1029,6 +1044,7 @@ UINT8 *sdpu_build_partial_attrib_entry (UINT8 *p_out, tSDP_ATTRIBUTE *p_attr, UI
 ** Returns          None
 **
 *******************************************************************************/
+#ifndef REVOLUTION
 void sdpu_uuid16_to_uuid128(UINT16 uuid16, UINT8* p_uuid128)
 {
     UINT16 uuid16_bo;
@@ -1038,3 +1054,4 @@ void sdpu_uuid16_to_uuid128(UINT16 uuid16, UINT8* p_uuid128)
     uuid16_bo = ntohs(uuid16);
     memcpy(p_uuid128+ 2, &uuid16_bo, sizeof(uint16_t));
 }
+#endif
