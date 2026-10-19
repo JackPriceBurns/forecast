@@ -410,6 +410,7 @@ config.libs = [
             # AXFX
             Object(Matching, "revolution/AXFX/AXFXHooks.c"),
             Object(Matching, "revolution/AXFX/AXFXReverbHi.c"),
+            Object(NonMatching, "revolution/AXFX/AXFXReverbHiExp.c"),
 
             # BASE
             Object(Matching, "revolution/BASE/PPCArch.c"),

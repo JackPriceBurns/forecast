@@ -1347,10 +1347,21 @@ revolution/AI/ai.c:
 	.sdata      start:0x80330660 end:0x80330668
 	.sbss       start:0x80331598 end:0x803315D8
 
+revolution/AX/AX.c:
+	.text       start:0x8010B3C4 end:0x8010B418
+	.data       start:0x801C9BC8 end:0x801C9C10
+	.sdata      start:0x80330668 end:0x80330670
+	.sbss       start:0x803315D8 end:0x803315E0
+
 revolution/AX/AXAlloc.c:
 	.text       start:0x8010B418 end:0x8010B8D0
 	.bss        start:0x802D23E0 end:0x802D24E0
 	.sbss       start:0x803315E0 end:0x803315E4
+
+revolution/AX/AXAux.c:
+	.text       start:0x8010B8D0 end:0x8010C0E8
+	.bss        start:0x802D24E0 end:0x802D5660
+	.sbss       start:0x803315E8 end:0x80331630
 
 revolution/AX/AXCL.c:
 	.text       start:0x8010C0E8 end:0x8010CB6C
@@ -1367,6 +1378,20 @@ revolution/AX/AXSPB.c:
 	.bss        start:0x802D6560 end:0x802D65D8
 	.sbss       start:0x80331690 end:0x803316E0
 
+revolution/AX/AXVPB.c:
+	.text       start:0x8010D778 end:0x8010ED88
+	.data       start:0x801C9C10 end:0x801C9CA0
+	.bss        start:0x802D65E0 end:0x802E7CE0
+	.sbss       start:0x803316E0 end:0x80331700
+	.sdata2     start:0x80332F90 end:0x80332FB0
+
+revolution/AX/AXComp.c:
+	.data       start:0x801C9CA0 end:0x801CAC60
+
+revolution/AX/DSPCode.c:
+	.data       start:0x801CAC60 end:0x801CCC60
+	.sdata      start:0x80330670 end:0x80330678
+
 revolution/AX/AXProf.c:
 	.text       start:0x8010ED88 end:0x8010EDC8
 	.sbss       start:0x80331700 end:0x80331710
@@ -1374,6 +1399,11 @@ revolution/AX/AXProf.c:
 revolution/AXFX/AXFXReverbHi.c:
 	.text       start:0x8010EDC8 end:0x8010EEC4
 	.sdata2     start:0x80332FB0 end:0x80332FB8
+
+revolution/AXFX/AXFXReverbHiExp.c:
+	.text       start:0x8010EEC4 end:0x8010FDF4
+	.data       start:0x801CCC60 end:0x801CCE00
+	.sdata2     start:0x80332FB8 end:0x80332FF8
 
 revolution/AXFX/AXFXHooks.c:
 	.text       start:0x8010FDF4 end:0x8010FE2C
@@ -1388,6 +1418,9 @@ revolution/DSP/dsp.c:
 	.data       start:0x801CCE00 end:0x801CCE80
 	.sdata      start:0x80330680 end:0x80330688
 	.sbss       start:0x80331718 end:0x80331720
+
+revolution/DSP/dsp_debug.c:
+	.text       start:0x8011201C end:0x8011206C
 
 revolution/DSP/dsp_task.c:
 	.text       start:0x8011206C end:0x80112900
@@ -1410,6 +1443,11 @@ revolution/SC/scapi_prdinfo.c:
 	.text       start:0x80117940 end:0x80117BB4
 	.data       start:0x801CD370 end:0x801CD3C8
 	.sdata      start:0x803307C8 end:0x803307D8
+
+revolution/WENC/wenc.c:
+	.text       start:0x80117BB4 end:0x80117E8C
+	.rodata     start:0x801974A8 end:0x801974E8
+	.sdata2     start:0x80333008 end:0x80333010
 
 revolution/IPC/ipcMain.c:
 	.text       start:0x801188A4 end:0x80118970
