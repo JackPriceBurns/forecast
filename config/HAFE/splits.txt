@@ -277,6 +277,10 @@ SimpleGlobe.cpp:
 	.sbss       start:0x80330C28 end:0x80330C34
 	.sdata2     start:0x80332098 end:0x80332130
 
+revolution/RSO/RSOLink.c:
+	.text       start:0x80044AAC end:0x80045ABC
+	.data       start:0x801B3C80 end:0x801B3D98
+
 revolution/CNT/cnt.c:
 	.text       start:0x80045ABC end:0x80045FD4
 	.rodata     start:0x8018F7B0 end:0x8018FA28
@@ -1179,6 +1183,11 @@ revolution/OS/OS.c:
 	.sdata      start:0x803304E8 end:0x8033050C
 	.sbss       start:0x803311F8 end:0x80331240
 
+revolution/OS/OSAlarm.c:
+	.text       start:0x800E4830 end:0x800E5014
+	.data       start:0x801B9350 end:0x801B9360
+	.sbss       start:0x80331240 end:0x80331248
+
 revolution/OS/OSAlloc.c:
 	.text       start:0x800E5014 end:0x800E531C
 	.sdata      start:0x80330510 end:0x80330514
@@ -1207,16 +1216,37 @@ revolution/OS/OSError.c:
 	.bss        start:0x802CB470 end:0x802CB4B4
 	.sdata      start:0x80330520 end:0x80330528
 
+revolution/OS/OSExec.c:
+	.text       start:0x800E6E8C end:0x800E905C
+	.data       start:0x801B9B18 end:0x801B9E68
+	.bss        start:0x802CB4C0 end:0x802CB4E0
+	.sdata      start:0x80330528 end:0x80330538
+	.sbss       start:0x80331260 end:0x80331278
+	.sdata2     start:0x80332D98 end:0x80332DA0
+
 revolution/OS/OSFatal.c:
 	.text       start:0x800E905C end:0x800E9C80
 	.bss        start:0x802CB4E0 end:0x802CB7B4
 	.sdata      start:0x80330538 end:0x8033053C
 	.sdata2     start:0x80332DA0 end:0x80332DE0
 
+revolution/OS/OSFont.c:
+	.text       start:0x800E9C80 end:0x800EA948
+	.data       start:0x801B9E68 end:0x801BA978
+	.sdata      start:0x80330540 end:0x80330548
+	.sbss       start:0x80331278 end:0x80331288
+	.sdata2     start:0x80332DE0 end:0x80332DE8
+
 revolution/OS/OSInterrupt.c:
 	.text       start:0x800EA948 end:0x800EB0CC
 	.data       start:0x801BA978 end:0x801BA9A8
 	.sbss       start:0x80331288 end:0x8033129C
+
+revolution/OS/OSLink.c:
+	.text       start:0x800EB0CC end:0x800EB0E4
+
+revolution/OS/OSMessage.c:
+	.text       start:0x800EB0E4 end:0x800EB2E8
 
 revolution/OS/OSMemory.c:
 	.text       start:0x800EB2E8 end:0x800EBAFC
@@ -1224,6 +1254,16 @@ revolution/OS/OSMemory.c:
 
 revolution/OS/OSMutex.c:
 	.text       start:0x800EBAFC end:0x800EBE00
+
+revolution/OS/OSReboot.c:
+	.text       start:0x800EBE00 end:0x800EBE80
+	.sbss       start:0x803312A0 end:0x803312A8
+
+revolution/OS/OSReset.c:
+	.text       start:0x800EBE80 end:0x800EC6E4
+	.data       start:0x801BA9B8 end:0x801BAC40
+	.sdata      start:0x80330548 end:0x80330550
+	.sbss       start:0x803312A8 end:0x803312B8
 
 revolution/OS/OSRtc.c:
 	.text       start:0x800EC6E4 end:0x800ED170
@@ -1257,6 +1297,9 @@ revolution/OS/OSStateTM.c:
 	.bss        start:0x802CC220 end:0x802CC2E0
 	.sbss       start:0x803312D0 end:0x803312F0
 
+revolution/OS/time.dolphin.c:
+	.text       start:0x800EF800 end:0x800EF84C
+
 revolution/OS/__start.c:
 	.init       start:0x80004000 end:0x800042E0
 	.sbss       start:0x803312F0 end:0x803312F1
@@ -1273,9 +1316,32 @@ revolution/OS/OSStateFlags.c:
 	.data       start:0x801C6BF0 end:0x801C6C18
 	.bss        start:0x802CC4E0 end:0x802CC500
 
+revolution/OS/OSNet.c:
+	.text       start:0x800F0150 end:0x800F0204
+	.data       start:0x801C6C18 end:0x801C6D80
+
+revolution/OS/OSNandbootInfo.c:
+	.text       start:0x800F0204 end:0x800F040C
+	.data       start:0x801C6D80 end:0x801C6DA0
+
+revolution/OS/OSPlayTime.c:
+	.text       start:0x800F040C end:0x800F0CA4
+	.data       start:0x801C6DA0 end:0x801C6DE0
+	.bss        start:0x802CC500 end:0x802CC530
+	.sdata      start:0x80330568 end:0x80330570
+	.sbss       start:0x80331318 end:0x80331330
+	.sdata2     start:0x80332DE8 end:0x80332DF8
+
 revolution/OS/__ppc_eabi_init.c:
 	.init       start:0x800042E0 end:0x80004338
 	.text       start:0x800F0CA4 end:0x800F0D58
+
+revolution/EXI/EXIBios.c:
+	.text       start:0x800F0D58 end:0x800F25EC
+	.data       start:0x801C6DE0 end:0x801C6E28
+	.bss        start:0x802CC530 end:0x802CC5F0
+	.sdata      start:0x80330570 end:0x80330578
+	.sbss       start:0x80331330 end:0x80331338
 
 revolution/EXI/EXIUart.c:
 	.text       start:0x800F25EC end:0x800F2920
@@ -1284,6 +1350,18 @@ revolution/EXI/EXIUart.c:
 revolution/EXI/EXICommon.c:
 	.text       start:0x800F2920 end:0x800F2AAC
 	.sdata2     start:0x80332DF8 end:0x80332E00
+
+revolution/SI/SIBios.c:
+	.text       start:0x800F2AAC end:0x800F3AB4
+	.data       start:0x801C6E28 end:0x801C6E98
+	.bss        start:0x802CC5F0 end:0x802CC810
+	.sdata      start:0x80330578 end:0x80330580
+	.sbss       start:0x80331348 end:0x80331358
+
+revolution/SI/SISamplingRate.c:
+	.text       start:0x800F3AB4 end:0x800F3B94
+	.data       start:0x801C6E98 end:0x801C6F30
+	.sbss       start:0x80331358 end:0x80331360
 
 revolution/DB/db.c:
 	.text       start:0x800F3B94 end:0x800F3C7C
@@ -1379,9 +1457,32 @@ revolution/AXFX/AXFXHooks.c:
 	.text       start:0x8010FDF4 end:0x8010FE2C
 	.sdata      start:0x80330678 end:0x80330680
 
+revolution/MEM/mem_heapCommon.c:
+	.text       start:0x8010FE2C end:0x80110298
+	.bss        start:0x802E7CE0 end:0x802E7D20
+	.sbss       start:0x80331710 end:0x80331718
+
+revolution/MEM/mem_expHeap.c:
+	.text       start:0x80110298 end:0x80110A80
+
+revolution/MEM/mem_frameHeap.c:
+	.text       start:0x80110A80 end:0x80110D6C
+
+revolution/MEM/mem_unitHeap.c:
+	.text       start:0x80110D6C end:0x80110FCC
+
 revolution/MEM/mem_allocator.c:
 	.text       start:0x80110FCC end:0x80111050
 	.sdata2     start:0x80332FF8 end:0x80333008
+
+revolution/MEM/mem_list.c:
+	.text       start:0x80111050 end:0x80111164
+
+revolution/CX/CXStreamingUncompression.c:
+	.text       start:0x80111164 end:0x80111950
+
+revolution/CX/CXUncompression.c:
+	.text       start:0x80111950 end:0x80111DE0
 
 revolution/DSP/dsp.c:
 	.text       start:0x80111DE0 end:0x8011201C
@@ -1414,6 +1515,12 @@ revolution/SC/scapi_prdinfo.c:
 revolution/IPC/ipcMain.c:
 	.text       start:0x801188A4 end:0x80118970
 	.sbss       start:0x80331768 end:0x8033177C
+
+revolution/IPC/ipcclt.c:
+	.text       start:0x80118970 end:0x8011A2E0
+	.bss        start:0x802F1240 end:0x802F12E0
+	.sdata      start:0x803307E8 end:0x803307F0
+	.sbss       start:0x80331780 end:0x80331790
 
 revolution/IPC/memory.c:
 	.text       start:0x8011A2E0 end:0x8011A804

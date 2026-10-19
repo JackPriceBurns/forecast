@@ -515,6 +515,10 @@ config.libs = [
             # CNT
             Object(Matching, "revolution/CNT/cnt.c"),
 
+            # CX
+            Object(NonMatching, "revolution/CX/CXStreamingUncompression.c"),
+            Object(NonMatching, "revolution/CX/CXUncompression.c"),
+
             # DB
             Object(Matching, "revolution/DB/db.c"),
 
@@ -568,6 +572,7 @@ config.libs = [
             Object(NonMatching, "revolution/MEM/mem_frameHeap.c"),
             Object(NonMatching, "revolution/MEM/mem_heapCommon.c"),
             Object(NonMatching, "revolution/MEM/mem_list.c"),
+            Object(NonMatching, "revolution/MEM/mem_unitHeap.c"),
 
             # MTX
             Object(Matching, "revolution/MTX/mtx44.c"),
@@ -624,8 +629,11 @@ config.libs = [
             Object(Matching, "revolution/OS/OSMemory.c"),
             Object(NonMatching, "revolution/OS/OSMessage.c"),
             Object(Matching, "revolution/OS/OSMutex.c"),
+            Object(NonMatching, "revolution/OS/OSNandbootInfo.c"),
             Object(NonMatching, "revolution/OS/OSNet.c"),
             Object(Matching, "revolution/OS/OSPlayRecord.c"),
+            Object(NonMatching, "revolution/OS/OSPlayTime.c"),
+            Object(NonMatching, "revolution/OS/OSReboot.c"),
             Object(NonMatching, "revolution/OS/OSReset.c"),
             Object(Matching, "revolution/OS/OSRtc.c"),
             Object(Matching, "revolution/OS/OSStateFlags.c"),
@@ -634,9 +642,13 @@ config.libs = [
             Object(Matching, "revolution/OS/OSThread.c"),
             Object(Matching, "revolution/OS/OSTime.c"),
             Object(Matching, "revolution/OS/OSUtf.c"),
+            Object(NonMatching, "revolution/OS/time.dolphin.c"),
 
             # PAD
             Object(Matching, "revolution/PAD/Pad.c"),
+
+            # RSO
+            Object(NonMatching, "revolution/RSO/RSOLink.c"),
 
             # SC
             Object(Matching, "revolution/SC/scapi.c"),
