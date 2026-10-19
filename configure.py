@@ -577,6 +577,7 @@ config.libs = [
             # NAND
             Object(NonMatching, "revolution/NAND/nand.c"),
             Object(NonMatching, "revolution/NAND/NANDCore.c"),
+            Object(NonMatching, "revolution/NAND/NANDLogging.c"),
             Object(NonMatching, "revolution/NAND/NANDOpenClose.c"),
 
             # NdevExi2AD

@@ -416,6 +416,11 @@ revolution/NWC24/NWC24Ipc.c:
 	.text       start:0x8006DC10 end:0x8006DD84
 	.sbss       start:0x80330D40 end:0x80330D44
 
+revolution/ARC/arc.c:
+	.text       start:0x80071620 end:0x80071FC0
+	.data       start:0x801B46C0 end:0x801B4730
+	.sdata      start:0x803302F8 end:0x80330300
+
 nw4r/ef/ef_draworder.cpp:
 	.text       start:0x80084C10 end:0x80084D10
 
@@ -1327,9 +1332,28 @@ revolution/GX/GXTransform.c:
 	.text       start:0x80101860 end:0x80101D7C
 	.sdata2     start:0x80332F78 end:0x80332F84
 
+revolution/DVD/dvdfs.c:
+	.text       start:0x801025B8 end:0x8010334C
+	.data       start:0x801C82D0 end:0x801C8470
+	.sdata      start:0x80330628 end:0x80330638
+	.sbss       start:0x80331498 end:0x803314B8
+
+revolution/DVD/dvd.c:
+	.text       start:0x8010334C end:0x80107E20
+	.data       start:0x801C8470 end:0x801C87E0
+	.bss        start:0x802CD300 end:0x802D1FB0
+	.sdata      start:0x80330638 end:0x80330650
+	.sbss       start:0x803314B8 end:0x80331558
+
 revolution/DVD/dvdqueue.c:
 	.text       start:0x80107E20 end:0x80108078
 	.bss        start:0x802D1FB0 end:0x802D1FD0
+
+revolution/DVD/dvderror.c:
+	.text       start:0x80108078 end:0x8010897C
+	.data       start:0x801C87E0 end:0x801C8810
+	.bss        start:0x802D1FE0 end:0x802D2240
+	.sbss       start:0x80331558 end:0x80331568
 
 revolution/DVD/dvdidutils.c:
 	.text       start:0x8010897C end:0x80108A6C
@@ -1340,6 +1364,13 @@ revolution/DVD/dvdFatal.c:
 	.data       start:0x801C8810 end:0x801C8CC0
 	.sbss       start:0x80331568 end:0x80331570
 	.sdata2     start:0x80332F88 end:0x80332F90
+
+revolution/DVD/dvd_broadway.c:
+	.text       start:0x80108BA8 end:0x8010AE60
+	.data       start:0x801C8CC0 end:0x801C9B80
+	.bss        start:0x802D2240 end:0x802D23E0
+	.sdata      start:0x80330650 end:0x80330660
+	.sbss       start:0x80331570 end:0x80331598
 
 revolution/AI/ai.c:
 	.text       start:0x8010AE60 end:0x8010B3C4
@@ -1394,6 +1425,30 @@ revolution/DSP/dsp_task.c:
 	.data       start:0x801CCE80 end:0x801CCFC0
 	.sbss       start:0x80331720 end:0x80331738
 
+revolution/NAND/nand.c:
+	.text       start:0x80112900 end:0x80113A24
+
+revolution/NAND/NANDOpenClose.c:
+	.text       start:0x80113A24 end:0x80114498
+	.data       start:0x801CCFC0 end:0x801CD000
+	.sdata      start:0x80330688 end:0x80330698
+	.sbss       start:0x80331738 end:0x80331740
+
+revolution/NAND/NANDCore.c:
+	.text       start:0x80114498 end:0x80115278
+	.rodata     start:0x80197308 end:0x80197450
+	.data       start:0x801CD000 end:0x801CD150
+	.bss        start:0x802E7D20 end:0x802E7D80
+	.sdata      start:0x80330698 end:0x803306B8
+	.sbss       start:0x80331740 end:0x80331748
+
+revolution/NAND/NANDLogging.c:
+	.text       start:0x80115278 end:0x80115848
+	.data       start:0x801CD150 end:0x801CD198
+	.bss        start:0x802E7D80 end:0x802E8080
+	.sdata      start:0x803306B8 end:0x803306C0
+	.sbss       start:0x80331748 end:0x80331750
+
 revolution/SC/scsystem.c:
 	.text       start:0x80115848 end:0x8011731C
 	.rodata     start:0x80197450 end:0x801974A8
@@ -1411,6 +1466,10 @@ revolution/SC/scapi_prdinfo.c:
 	.data       start:0x801CD370 end:0x801CD3C8
 	.sdata      start:0x803307C8 end:0x803307D8
 
+revolution/ESP/esp.c:
+	.text       start:0x80117E8C end:0x801188A4
+	.sdata      start:0x803307D8 end:0x803307E8
+
 revolution/IPC/ipcMain.c:
 	.text       start:0x801188A4 end:0x80118970
 	.sbss       start:0x80331768 end:0x8033177C
@@ -1423,6 +1482,12 @@ revolution/IPC/ipcProfile.c:
 	.text       start:0x8011A804 end:0x8011A9C8
 	.bss        start:0x802F1360 end:0x802F1460
 	.sbss       start:0x80331790 end:0x80331798
+
+revolution/FS/fs.c:
+	.text       start:0x8011A9C8 end:0x8011BF9C
+	.data       start:0x801CD3C8 end:0x801CD3F0
+	.sdata      start:0x803307F0 end:0x80330800
+	.sbss       start:0x80331798 end:0x803317B0
 
 revolution/PAD/Pad.c:
 	.text       start:0x8011BF9C end:0x8011BFF8
